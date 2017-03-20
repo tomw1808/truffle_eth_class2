@@ -1,0 +1,238 @@
+<!doctype html>
+<html>
+<head>
+    <title>myDapp</title>
+    <script src="web3.js/dist/web3.min.js"></script>
+
+    <script type="text/javascript">
+
+        var contract_code;
+
+        /**
+         * FIRST YOU HAVE TO DEPLOY A CONTRACT AND INSERT THE ADDRESS HERE
+         *
+         * You can do this by using the browser and hit "Deploy new contract" and copy the contract address form the developer console
+         * @type {string}
+         */
+        var contract_address = "0xad0b0d65eb6c52b638d8c8197fa1201bd59d0c2f"; //the address is not valid on your own machine!!
+        var contract_abi = [{"constant":true,"inputs":[],"name":"getCreator","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[],"name":"kill","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"myNewNumber","type":"uint256"}],"name":"setMyNumber","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getMyNumber","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"whoIncreased","type":"address"},{"indexed":true,"name":"oldNumber","type":"uint256"},{"indexed":true,"name":"newNumber","type":"uint256"}],"name":"NumberIsIncreased","type":"event"}];
+
+        var client = new XMLHttpRequest();
+        client.open('GET', './contract.sol');
+        client.onreadystatechange = function () {
+            if (client.readyState === 4)
+                contract_code = client.responseText;
+        };
+        client.send();
+
+
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            // set the provider you want from Web3.providers
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        }
+
+        var contract_instance;
+
+        function deployContract() {
+
+            // COMMENT START USING TESTRPC!
+            var compiled_contract = web3.eth.compile.solidity(contract_code);
+            var code = compiled_contract['<stdin>:MyContract'].code;
+            var abi = compiled_contract['<stdin>:MyContract'].info.abiDefinition;
+            console.log(compiled_contract);
+            web3.personal.unlockAccount(web3.eth.accounts[0], 'test123');
+            //COMMENT END USING TESTRPC!
+
+            //uncomment the following for using it with testrpc
+            ////you need the following for using testrpc! It's the compiled bytecode from browser-solidity
+            //var contract_bytecode = "6060604052341561000c57fe5b5b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060036001819055505b5b610251806100676000396000f30060606040526000357c0100000000000000000000000000000000000000000000000000000000900463ffffffff1680630ee2cb101461005c57806341c0e1b5146100ae5780636ffd773c146100c0578063b32e737f146100e0575bfe5b341561006457fe5b61006c610106565b604051808273ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16815260200191505060405180910390f35b34156100b657fe5b6100be610131565b005b34156100c857fe5b6100de60048080359060200190919050506101c5565b005b34156100e857fe5b6100f061021a565b6040518082815260200191505060405180910390f35b6000600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1690505b90565b600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff163373ffffffffffffffffffffffffffffffffffffffff1614156101c257600060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16ff5b5b565b806001543373ffffffffffffffffffffffffffffffffffffffff167f1d24b596e52915c2caa611e9a8e5257b7cc1b186f2748623f5941b6acf12071f60405180905060405180910390a4806001819055505b50565b600060015490505b905600a165627a7a723058209ae3cdf969b98d4b285c56834d288071886f09f58d2610d67619088222cc2f8b0029";
+            //var code = contract_bytecode;
+            //var abi = contract_abi;
+            web3.eth.contract(abi).new({
+                data: code,
+                from: web3.eth.accounts[0],
+                gas: 3000000
+            }, function (error, result) {
+                if (error) {
+                    console.error(error);
+                } else {
+                    if (result.address) {
+                        contract_instance = result;
+                        console.log(contract_instance);
+                        makeButtonsVisible();
+                    }
+                }
+            });
+
+        }
+
+        function makeButtonsVisible() {
+            var buttons = document.getElementsByClassName("buttonVisibleWhenInstanceAvailable");
+            for(var i = 0; i < buttons.length; i++) {
+                buttons[i].style.visibility = 'visible';
+            }
+        }
+
+        function getPreviouslyDeployedContract() {
+            contract_instance = web3.eth.contract(contract_abi).at(contract_address);
+            makeButtonsVisible();
+        }
+
+
+        function getCounter() {
+            document.getElementById("myCounter").innerText = contract_instance.getMyNumber().toNumber();
+        }
+
+        function increaseCounter() {
+            var currentNumber = contract_instance.getMyNumber().toNumber();
+            currentNumber++;
+
+
+            //comment this when using testrpc
+            web3.personal.unlockAccount(web3.eth.accounts[0], 'test123');
+            contract_instance.setMyNumber(currentNumber, {from: web3.eth.accounts[0]}, function (error, result) {
+                if (error) {
+                    console.error(error);
+                } else {
+                    var txHash = result;
+                    console.log(txHash);
+                    callWhenMined(txHash, getCounter);
+                }
+            });
+        }
+        function increaseCounterAccount1() {
+            var currentNumber = contract_instance.getMyNumber().toNumber();
+            currentNumber++;
+
+            //comment this when using testrpc
+            web3.personal.unlockAccount(web3.eth.accounts[1], 'test123');
+            contract_instance.setMyNumber(currentNumber, {from: web3.eth.accounts[1]}, function (error, result) {
+                if (error) {
+                    console.error(error);
+                } else {
+                    var txHash = result;
+                    console.log(txHash);
+                    callWhenMined(txHash, getCounter);
+                }
+            });
+        }
+
+        function callWhenMined(txHash, callback) {
+            web3.eth.getTransactionReceipt(txHash, function (error, rcpt) {
+                if (error) {
+                    console.error(error);
+                } else {
+                    if (rcpt == null) {
+                        setTimeout(function () {
+                            callWhenMined(txHash, callback);
+                        }, 500);
+                    } else {
+                        callback();
+                    }
+                }
+            })
+        }
+
+
+        var myEvent;
+
+        function watchEvents() {
+
+            myEvent = contract_instance.NumberIsIncreased({}, {fromBlock:'latest', toBlock:'latest'});
+            console.log(myEvent);
+            myEvent.watch(function(error, result) {
+                if(error) {
+                    console.log(error);
+                } else {
+                    console.log(result);
+                    document.getElementById("events").innerHTML = document.getElementById("events").innerHTML + "<br />" + JSON.stringify(result);
+                }
+            });
+        }
+
+        function stopWatchingEvents() {
+            if(myEvent !== undefined) {
+                myEvent.stopWatching();
+        }
+        }
+
+        function getAllEvents() {
+            contract_instance.allEvents({fromBlock: 0, toBlock: 'latest'}, function(error, result) {
+                if(error) {
+                    console.error(error);
+                } else {
+                    console.log(result);
+                }
+            })
+        }
+
+        function getNumberIsIncreasedEvent() {
+            contract_instance.NumberIsIncreased({}, {fromBlock: 0, toBlock: 'latest'}).get(function(error, result) {
+                if(error) {
+                    console.error(error);
+                } else {
+                    console.log(result);
+                }
+            });
+        }
+
+        var filter;
+        function filterEventsWatch() {
+            filter = web3.eth.filter({fromBlock:0, toBlock: 'latest', address: contract_instance.address, 'topics':[web3.sha3('NumberIsIncreased(address,uint256,uint256)')]});
+            filter.watch(function(error, result) {
+                if(error) {
+                    console.error(error);
+                } else {
+                    console.log({"type": "filter", "obj": result});
+                    console.log(web3.toDecimal(result.topics[3]));
+                }
+            })
+        }
+
+        function stopFilterEventsWatch() {
+            filter.stopWatching();
+        }
+
+        function filterEventsGet() {
+            var filter = web3.eth.filter({fromBlock:0, toBlock: 'latest', address: contract_instance.address, 'topics':[web3.sha3('NumberIsIncreased(address,uint256,uint256)')]});
+            filter.get(function(error, result) {
+                if(error) {
+                    console.error(error);
+                } else {
+                    console.log({"type": "filter", "obj": result});
+                }
+            })
+        }
+
+
+    </script>
+</head>
+<body>
+<h1>Interact with a contract</h1>
+
+<button onclick="deployContract()">Deploy NEW contract</button>
+<button onclick="getPreviouslyDeployedContract()">Attach to existing contract</button>
+<button onclick="getCounter()" class="buttonVisibleWhenInstanceAvailable" style="visibility: hidden">Update Counter</button>
+<button onclick="increaseCounter()" class="buttonVisibleWhenInstanceAvailable" style="visibility: hidden">Increase Counter</button>
+<button onclick="increaseCounterAccount1()" class="buttonVisibleWhenInstanceAvailable" style="visibility: hidden">Increase Counter Account 1</button>
+<button onclick="watchEvents()" class="buttonVisibleWhenInstanceAvailable" style="visibility: hidden">Watch Event</button>
+<button onclick="stopWatchingEvents()" class="buttonVisibleWhenInstanceAvailable" style="visibility: hidden">Stop Watching Event</button>
+<button onclick="getAllEvents()" class="buttonVisibleWhenInstanceAvailable" style="visibility: hidden">Get All Event</button>
+<button onclick="getNumberIsIncreasedEvent()" class="buttonVisibleWhenInstanceAvailable" style="visibility: hidden">Get NumberIsIncreased Event</button>
+<button onclick="filterEventsWatch()" class="buttonVisibleWhenInstanceAvailable" style="visibility: hidden">Filter Events Watch</button>
+<button onclick="stopFilterEventsWatch()" class="buttonVisibleWhenInstanceAvailable" style="visibility: hidden">Stop Filter Events Watch</button>
+<button onclick="filterEventsGet()" class="buttonVisibleWhenInstanceAvailable" style="visibility: hidden">Filter Events Get</button>
+
+<br />
+<span id="myCounter"></span> Counter
+
+
+<br />
+<br />
+<h2>Events:</h2>
+<div id="events"></div>
+
+</body>
+</html>

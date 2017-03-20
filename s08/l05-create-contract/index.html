@@ -1,0 +1,92 @@
+<!doctype html>
+        <html>
+<head>
+    <title>myDapp</title>
+    <script src="web3.js/dist/web3.min.js"></script>
+
+    <script type="text/javascript">
+
+        var contract_code = "pragma solidity ^0.4.0; contract MyContract { address creator; uint256 myNumber; function MyContract() { creator = msg.sender; myNumber = 3; } function getCreator() constant returns(address) { return creator; } function getMyNumber() constant returns(uint256) { return myNumber; } function setMyNumber(uint256 myNewNumber) { myNumber = myNewNumber; } function kill() { if(msg.sender == creator) { suicide(creator); } } }";
+
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            // set the provider you want from Web3.providers
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        }
+
+        var contract_instance;
+
+        function deployContract() {
+            var compiled_contract = web3.eth.compile.solidity(contract_code);
+            var code = compiled_contract['<stdin>:MyContract'].code;
+            var abi = compiled_contract['<stdin>:MyContract'].info.abiDefinition;
+            console.log(compiled_contract);
+            web3.personal.unlockAccount(web3.eth.accounts[0], 'test123');
+
+            //gasAmount = web3.eth.estimateGas({data:code}); for reference: this doesn't work and underestimates the gas on my private net. Don't ask me why.
+
+            web3.eth.contract(abi).new({data:code, from:web3.eth.accounts[0], gas:3000000}, function(error, result) {
+                if(error) {
+                    console.error(error);
+                } else {
+                    if(result.address) {
+                        contract_instance = result;
+                        console.log(contract_instance);
+                        document.getElementById("updateCounterButton").style.visibility = 'visible';
+                        document.getElementById("increaseCounterButton").style.visibility = 'visible';
+                    }
+                }
+            });
+
+        }
+
+        function getCounter() {
+            document.getElementById("myCounter").innerText = contract_instance.getMyNumber().toNumber();
+        }
+
+        function increaseCounter() {
+            var currentNumber = contract_instance.getMyNumber().toNumber();
+            currentNumber++;
+            web3.personal.unlockAccount(web3.eth.accounts[0], 'test123');
+            contract_instance.setMyNumber(currentNumber, {from: web3.eth.accounts[0]}, function(error, result) {
+                if(error) {
+                    console.error(error);
+                } else {
+                    var txHash = result;
+                    console.log(txHash);
+                    callWhenMined(txHash, getCounter);
+                }
+            });
+        }
+
+        function callWhenMined(txHash, callback) {
+            web3.eth.getTransactionReceipt(txHash, function(error, rcpt) {
+                if(error) {
+                    console.error(error);
+                } else {
+                    if(rcpt == null) {
+                        setTimeout(function() {
+                            callWhenMined(txHash, callback);
+                        }, 500);
+                    } else {
+                        callback();
+                    }
+                }
+            })
+        }
+
+
+    </script>
+</head>
+<body>
+<h1>Interact with a contract</h1>
+
+<button onclick="deployContract()">Deploy my contract</button>
+<button onclick="getCounter()" id="updateCounterButton" style="visibility: hidden">Update Counter</button>
+<button onclick="increaseCounter()" id="increaseCounterButton" style="visibility: hidden">Increase Counter</button>
+
+<span id="myCounter"></span> Counter
+
+</body>
+</html>
