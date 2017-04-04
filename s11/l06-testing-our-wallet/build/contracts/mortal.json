@@ -1,0 +1,17 @@
+{
+  "contract_name": "mortal",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "kill",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    }
+  ],
+  "unlinked_binary": "0x60606040525b60008054600160a060020a03191633600160a060020a03161790555b5b609b806100306000396000f300606060405263ffffffff60e060020a60003504166341c0e1b581146022575b6000565b34600057602c602e565b005b6000543373ffffffffffffffffffffffffffffffffffffffff90811691161415606c5760005473ffffffffffffffffffffffffffffffffffffffff16ff5b5b5600a165627a7a7230582037f85cd3eb21494a64077794e47e72b7d0c87cf10763afd10d7e90309878b8bb0029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1490198602655
+}

@@ -1,0 +1,197 @@
+{
+  "contract_name": "MyWallet",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "name": "_value",
+          "type": "uint256"
+        },
+        {
+          "name": "_reason",
+          "type": "string"
+        }
+      ],
+      "name": "spendMoneyOn",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "kill",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "proposal_id",
+          "type": "uint256"
+        }
+      ],
+      "name": "confirmProposal",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "payable": true,
+      "type": "fallback"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "receivedFunds",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "_from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_reason",
+          "type": "string"
+        }
+      ],
+      "name": "proposalReceived",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x60606040525b60008054600160a060020a03191633600160a060020a03161790555b5b6104a2806100316000396000f3006060604052361561003b5763ffffffff60e060020a600035041663192997e7811461009157806341c0e1b514610103578063f4a4f4d214610112575b61008f5b600034111561008c5760408051600160a060020a033316815234602082015281517f3f638da77ee3d49db2211092b965c9c7c2fcb68fea5e8f85986200f8776f6a1d929181900390910190a15b5b565b005b3461000057604080516020600460443581810135601f81018490048402850184019095528484526100f1948235600160a060020a031694602480359560649492939190920191819084018382808284375094965061013695505050505050565b60408051918252519081900360200190f35b346100005761008f61039c565b005b34610000576101226004356103c4565b604080519115158252519081900360200190f35b60008054819033600160a060020a039081169116141561018857604051600160a060020a0386169085156108fc029086906000818181858888f19350505050905080151561018357610000565b610393565b6001805481018082556040805160a081018252600160a060020a03338116825289811660208084019182528385018b8152606085018b815260006080870181905297885260028084529688208651815490871673ffffffffffffffffffffffffffffffffffffffff199182161782559451818b0180549190971695169490941790945551828601559151805160038301805481895297859020959893979096601f9482161561010002600019019091160483018490048501949093909291019083901061026057805160ff191683800117855561028d565b8280016001018555821561028d579182015b8281111561028d578251825591602001919060010190610272565b5b506102ae9291505b808211156102aa5760008155600101610296565b5090565b505060808201518160040160006101000a81548160ff02191690831515021790555090505084600160a060020a031633600160a060020a03167f24bb5c74895c3fd8414e0d433edece1a9f0833ae289514c568d306738c5f1a77856040518080602001828103825283818151815260200191508051906020019080838360008314610354575b80518252602083111561035457601f199092019160209182019101610334565b505050905090810190601f1680156103805780820380516001836020036101000a031916815260200191505b509250505060405180910390a360015491505b5b509392505050565b60005433600160a060020a039081169116141561008c57600054600160a060020a0316ff5b5b565b60008054819033600160a060020a039081169116141561046c575060008281526002602052604090208054600160a060020a03161561046c57600481015460ff16151560011461046c5760048101805460ff191660019081179091558101546002820154604051600160a060020a039092169181156108fc0291906000818181858888f193505050501561045b576001915061046c565b60048101805460ff19169055600091505b5b5b5b5b509190505600a165627a7a7230582045d5ac8d27cb2cc0934d4fe499684466d01cf3bab2c2bbee198379d89907063b0029",
+  "networks": {
+    "1490197083728": {
+      "events": {
+        "0x3f638da77ee3d49db2211092b965c9c7c2fcb68fea5e8f85986200f8776f6a1d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "receivedFunds",
+          "type": "event"
+        },
+        "0x24bb5c74895c3fd8414e0d433edece1a9f0833ae289514c568d306738c5f1a77": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_reason",
+              "type": "string"
+            }
+          ],
+          "name": "proposalReceived",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x82def32670ae1715f14c3fbbb298c7bb0ff04e3a",
+      "updated_at": 1490197128407
+    },
+    "1490197993927": {
+      "events": {
+        "0x3f638da77ee3d49db2211092b965c9c7c2fcb68fea5e8f85986200f8776f6a1d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "name": "receivedFunds",
+          "type": "event"
+        },
+        "0x24bb5c74895c3fd8414e0d433edece1a9f0833ae289514c568d306738c5f1a77": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_reason",
+              "type": "string"
+            }
+          ],
+          "name": "proposalReceived",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x5a084f5cff8f724c0db85d36e98b8d978584cac3",
+      "updated_at": 1490198608438
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1490198608438
+}
