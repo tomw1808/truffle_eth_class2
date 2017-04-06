@@ -62,24 +62,137 @@ window.App = {
     });
   },
 
-  sendCoin: function() {
+  addCV: function() {
     var self = this;
 
-    var amount = parseInt(document.getElementById("amount").value);
-    var receiver = document.getElementById("receiver").value;
+    var new_cv_address = document.getElementById("address").value;
 
-    this.setStatus("Initiating transaction... (please wait)");
-
-    var meta;
-    MetaCoin.deployed().then(function(instance) {
-      meta = instance;
-      return meta.sendCoin(receiver, amount, {from: account});
-    }).then(function() {
-      self.setStatus("Transaction complete!");
+    var cvindex;
+    CVIndex.deployed().then(function(instance) {
+      cvindex = instance;
+      console.log(new_cv_address);
+      return cvindex.addCV(new_cv_address,{from: account});
+    }).then(function(result) {
+      console.log(result);
       self.refreshBalance();
     }).catch(function(e) {
-      console.log(e);
-      self.setStatus("Error sending coin; see log.");
+      console.error(e);
+    });
+  },
+
+  activateCV: function(cv_index) {
+    var self = this;
+    var cvindex_instance;
+    CVIndex.deployed().then(function(instance) {
+      cvindex_instance = instance;
+      return cvindex_instance.activateCV(cv_index,{from: account});
+    }).then(function(result) {
+      self.refreshBalance();
+    }).catch(function(e) {
+      console.error(e);
+    });
+  },
+
+  listenProposed: function() {
+    CVIndex.deployed().then(function(instance) {
+      var cvextender_instance_global;
+      var cvindex_instance;
+      var _author;
+
+      var _address;
+      var _about;
+      document.getElementById("submitted").innerHTML = '';
+      return instance.ProposedCV({by:account.address},{fromBlock:0, toBlock:'latest'}).watch(function(error, result) {
+        CVExtender.at(result.args.cvaddress).then(function(cvextender_instance) {
+          cvextender_instance_global = cvextender_instance;
+          return cvextender_instance.getAuthor();
+        }).then(function(author) {
+          _author = author;
+          return cvextender_instance_global.getAddress();
+        }).then(function(address) {
+          _address = address;
+          return cvextender_instance_global.getTitle();
+        }).then(function(title) {
+          _about = title;
+          return instance.isCvActive(result.args.cvindex);
+        }).then(function(is_active) {
+          document.getElementById("submitted").innerHTML += '<a href="'+_address+'" target="_blank">'+_about+'</a> by '+_author[0]+" - "+_author[1]+" [active:"+is_active+"]";
+        });
+      });
+    })
+  },
+
+  listNotActive: function() {
+    CVIndex.deployed().then(function(instance) {
+      document.getElementById("noActive").innerHTML = '';
+      return instance.ProposedCV({},{fromBlock:0, toBlock:'latest'}).get(function(error, result) {
+        for(var i = result.length-1; i >= 0; i--) {
+          var cur_result = result[i];
+          App.listNotActiveInner(cur_result);
+        }
+      });
+    })
+  },
+  listNotActiveInner: function(result) {
+    CVIndex.deployed().then(function(instance) {
+      var cvextender_instance_global;
+      var _author;
+
+      var _address;
+      var _about;
+      CVExtender.at(result.args.cvaddress).then(function (cvextender_instance) {
+        cvextender_instance_global = cvextender_instance;
+        return cvextender_instance.getAuthor();
+      }).then(function (author) {
+        _author = author;
+        return cvextender_instance_global.getAddress();
+      }).then(function (address) {
+        _address = address;
+        return cvextender_instance_global.getTitle();
+      }).then(function (title) {
+        _about = title;
+        return instance.isCvActive(result.args.cvindex);
+      }).then(function (is_active) {
+        if (!is_active) {
+          document.getElementById("noActive").innerHTML += '<a href="' + _address + '" target="_blank">' + _about + '</a> by ' + _author[0] + " - " + _author[1] + " [active:" + is_active + "] <button onclick='App.activateCV(" + result.args.cvindex + ")'>Activate</button><br />";
+        }
+      });
+    });
+  },
+  listActive: function() {
+    var cvindex_instance;
+    var _num_cvs;
+
+    CVIndex.deployed().then(function(instance) {
+      cvindex_instance = instance;
+      return instance.getNumCVs();
+    }).then(function(num_cvs) {
+      for(var i = num_cvs; i >= 1; i--) {
+        cvindex_instance.getAddressAtIndex(i).then(function(cvaddress) {
+
+          var _author;
+          var _address;
+          var _about;
+          var _description;
+          var cvextender_instance_global;
+          CVExtender.at(cvaddress).then(function (cvextender_instance) {
+            cvextender_instance_global = cvextender_instance;
+            return cvextender_instance.getAuthor();
+          }).then(function (author) {
+            _author = author;
+            return cvextender_instance_global.getAddress();
+          }).then(function (address) {
+            _address = address.replace(/[^a-z0-9:/?\s.,]/gi,"*hidden*");
+            return cvextender_instance_global.getDescription();
+          }).then(function (description) {
+            _description = description.replace(/[^a-z0-9:/?\s.,]/gi,"*hidden*");
+            return cvextender_instance_global.getTitle();
+          }).then(function (title) {
+            _about = title.replace(/[^a-z0-9:/?\s.,]/gi,"*hidden*");
+            document.getElementById("submitted").innerHTML += '<h3><a href="' + _address + '" target="_blank">' + _about + '</a></h3><p>'+_description+'</p><p><small> ' + _author[0].replace(/[^a-z0-9:/?\s@.,]/gi,"*hidden*") + " - " + _author[1].replace(/[^a-z0-9:/?\s@.,]/gi,"*hidden*") + "</small></p><hr/><br />";
+          });
+        })
+      }
     });
   }
 };

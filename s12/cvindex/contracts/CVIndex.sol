@@ -40,14 +40,14 @@ contract CVIndex is mortal {
     mapping(uint => CV) map_cvs_active;
     mapping(address => uint) addressCVPosition;
     
-    event ProposedCV(uint indexed cvindex, address indexed by, uint date);
+    event ProposedCV(uint indexed cvindex, address indexed by, address cvaddress, uint date);
     
     function addCV(address cvAddress) {
         cvindex++;
         CVExtender cv_dings = CVExtender(cvAddress);
         if(cv_dings.elementsAreSet()) {
             map_cvs[cvindex] = CV(cvAddress, false, msg.sender, now);
-            ProposedCV(cvindex, msg.sender, now);
+            ProposedCV(cvindex, msg.sender, cvAddress, now);
             addressCVPosition[cvAddress] = cvindex;
         } else {
            throw;
@@ -57,7 +57,7 @@ contract CVIndex is mortal {
     function activateCV(uint cvIndex) onlyowner {
         map_cvs[cvIndex]._active = true;
         cvindex_active++;
-        map_cvs[cvindex_active] = map_cvs[cvIndex];
+        map_cvs_active[cvindex_active] = map_cvs[cvIndex];
     }
     
     function deactivateCV(uint cvIndexActive) onlyowner {
@@ -81,6 +81,13 @@ contract CVIndex is mortal {
             return (map_cvs_active[_index]._address);
         }
         throw;
+    }
+
+    function getAddressAtIndexUnconfirmed(uint _index) constant returns (address) {
+        return (map_cvs[_index]._address);
+    }
+    function isCvActive(uint _index) constant returns (bool) {
+        return (map_cvs[_index]._active);
     }
     
 }

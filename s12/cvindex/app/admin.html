@@ -5,15 +5,13 @@
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
 </head>
-<body onload="App.listActive();">
-  <h1>Blockchain CV Index</h1>
-  <h2>Find Blockchain-Talent!</h2>
+<body>
+  <h1>Admin Panel</h1>
   <h3>There are <span id="activeCVs"></span> CVs in the index.</h3>
-  <a href="addcv.html">Add YOUR Entry now!</a>
-  <br />
-  <br />
-  <br />
-  <h2>Projects from the Blockchain world:</h2>
-  <div id="submitted"></div>
+
+<br />
+<h3>Not Active Projects</h3>
+  <button onclick="App.listNotActive();">Reload</button>
+<div id="noActive"></div>
 </body>
 </html>
