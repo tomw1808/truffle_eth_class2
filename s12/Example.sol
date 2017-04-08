@@ -2,7 +2,7 @@ pragma solidity ^0.4.8;
 
 import "CVExtender.sol";
 
-contract MyContract is CVExtender {
+contract Example is CVExtender {
     
     /**
      * Your functions go here

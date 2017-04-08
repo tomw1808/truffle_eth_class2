@@ -41,7 +41,8 @@ contract CVIndex is mortal {
     mapping(address => uint) addressCVPosition;
     
     event ProposedCV(uint indexed cvindex, address indexed by, address cvaddress, uint date);
-    
+    event ActivatedCV(uint indexed cvindex_active, address cvaddress, uint date);
+
     function addCV(address cvAddress) {
         cvindex++;
         CVExtender cv_dings = CVExtender(cvAddress);
@@ -58,6 +59,7 @@ contract CVIndex is mortal {
         map_cvs[cvIndex]._active = true;
         cvindex_active++;
         map_cvs_active[cvindex_active] = map_cvs[cvIndex];
+        ActivatedCV(cvindex_active, map_cvs[cvIndex]._address, now);
     }
     
     function deactivateCV(uint cvIndexActive) onlyowner {
@@ -65,6 +67,7 @@ contract CVIndex is mortal {
             map_cvs[addressCVPosition[map_cvs_active[cvIndexActive]._address]]._active = false;
             //move the last element over the one here
             map_cvs_active[cvIndexActive] = map_cvs_active[cvindex_active];
+
             //delete the last element
             delete map_cvs_active[cvindex_active];
             //make the whole index one element shorter
