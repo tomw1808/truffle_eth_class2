@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blockchain CV Index - Find Talent for Blockchain Development</title>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <script src="./app.js"></script>
+</head>
+<body>
+<h1>Blockchain CV Index</h1>
+<h2>Find Blockchain-Talent!</h2>
+<h3>There are <span id="activeCVs"></span> CVs in the index.</h3>
+
+<br>
+<h1>Add a CV</h1>
+<br><label for="address">Address:</label><input type="text" id="address"
+                                                placeholder="e.g., 0x93e66d9baea28c17d9fc393b53e3fbdd76899dae"/>
+<br><br>
+<button id="send" onclick="App.addCV()">Add</button>
+
+<br/>
+<h3>Your submitted Projects</h3>
+<button onclick="App.listenProposed();">Refresh</button>
+<br/>
+<div id="submitted"></div>
+</body>
+</html>

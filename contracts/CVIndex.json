@@ -1,0 +1,280 @@
+{
+  "contract_name": "CVIndex",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "kill",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "cvIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "activateCV",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getNumCVs",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_index",
+          "type": "uint256"
+        }
+      ],
+      "name": "isCvActive",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "cvAddress",
+          "type": "address"
+        }
+      ],
+      "name": "addCV",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "cvIndexActive",
+          "type": "uint256"
+        }
+      ],
+      "name": "deactivateCV",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getAddressAtIndex",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_index",
+          "type": "uint256"
+        }
+      ],
+      "name": "getAddressAtIndexUnconfirmed",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "cvindex",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "name": "by",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "cvaddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "date",
+          "type": "uint256"
+        }
+      ],
+      "name": "ProposedCV",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "cvindex_active",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "cvaddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "date",
+          "type": "uint256"
+        }
+      ],
+      "name": "ActivatedCV",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x6060604052600060015560006002555b60008054600160a060020a03191633600160a060020a03161790555b5b6105be8061003b6000396000f300606060405236156100725763ffffffff60e060020a60003504166341c0e1b5811461007757806354e20048146100865780635b48e7f4146100985780638888437f146100b757806390174a6c146100db578063b2ad739d146100f6578063c8c1fce714610108578063da6f99fd14610134575b610000565b3461000057610084610160565b005b3461000057610084600435610188565b005b34610000576100a561027e565b60408051918252519081900360200190f35b34610000576100c7600435610285565b604080519115158252519081900360200190f35b3461000057610084600160a060020a03600435166102a4565b005b3461000057610084600435610416565b005b346100005761011860043561052e565b60408051600160a060020a039092168252519081900360200190f35b3461000057610118600435610574565b60408051600160a060020a039092168252519081900360200190f35b60005433600160a060020a039081169116141561018557600054600160a060020a0316ff5b5b565b60005433600160a060020a0390811691161415610279576000818152600360208181526040808420805460a060020a60ff021990811660a060020a908117835560028054600190810180835589526004875285892085548154600160a060020a0319908116600160a060020a0392831617808455885487900460ff1615159096029590961694909417815585820154918101805490951691841691909117909355808401549281019290925590549587905293835254815193168352429183019190915280517f74e0fa1e41bb18756915b0e4bdd9e5dc1671a75ee07fa8233a9e237c5998b0079281900390910190a25b5b5b50565b6002545b90565b60008181526003602052604090205460a060020a900460ff165b919050565b6001805481019055604080516000602091820181905282517f7e9aef5300000000000000000000000000000000000000000000000000000000815292518493600160a060020a03851693637e9aef539360048084019492938390030190829087803b156100005760325a03f115610000575050604051511590506100725760408051608081018252600160a060020a0380851680835260006020808501828152338516868801818152426060890181815260018054885260038752968b902099518a549551151560a060020a0260a060020a60ff0219918b16600160a060020a03199788161791909116178a55915189870180549190991694169390931790965594516002909601959095559054855192835290820193909352835191937ff116068e52439f20b6bfac8c83fb068c1d029cdae615693df802ef93d689690d92918290030190a3600154600160a060020a038316600090815260056020526040902055610411565b610000565b5b5050565b60005433600160a060020a039081169116141561027957600081815260046020526040902054600160a060020a0316156102795760008181526004602081815260408084208054600160a060020a0390811686526005845282862054865260038452828620805460a060020a60ff02199081169091556002805488529590945282862080548354600160a060020a031990811691841691909117808555825460a060020a9081900460ff1615150296169590951783556001818101548185018054881691909416179092558501549185019190915583548552908420805474ffffffffffffffffffffffffffffffffffffffffff19168155908101805490921690915581019190915580546000190190555b5b5b5b50565b60008181526004602052604081205460a060020a900460ff16156100725750600081815260046020526040902054600160a060020a031661029f565b610000565b919050565b600081815260036020526040902054600160a060020a03165b9190505600a165627a7a72305820c2bff2d82c8e257795abaaa9b9766fde689dfb346791cb79876e2572ca9cf7140029",
+  "networks": {
+    "1": {
+      "events": {
+        "0x6f4b89236478710527ffc6d14c8b1aaeb61ee93dce610adc739f23b55780052e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "cvindex",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "by",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "date",
+              "type": "uint256"
+            }
+          ],
+          "name": "ProposedCV",
+          "type": "event"
+        },
+        "0xf116068e52439f20b6bfac8c83fb068c1d029cdae615693df802ef93d689690d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "cvindex",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "by",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "cvaddress",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "date",
+              "type": "uint256"
+            }
+          ],
+          "name": "ProposedCV",
+          "type": "event"
+        },
+        "0x74e0fa1e41bb18756915b0e4bdd9e5dc1671a75ee07fa8233a9e237c5998b007": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "cvindex_active",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "cvaddress",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "date",
+              "type": "uint256"
+            }
+          ],
+          "name": "ActivatedCV",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x3ea9a5ea3d788f8c8a6863a696dc8bcbfe553014",
+      "updated_at": 1491672345200
+    },
+    "1491243189109": {
+      "events": {
+        "0x6f4b89236478710527ffc6d14c8b1aaeb61ee93dce610adc739f23b55780052e": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "cvindex",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "by",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "date",
+              "type": "uint256"
+            }
+          ],
+          "name": "ProposedCV",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xc73c830d64072345e1029651c07a6b231674987e",
+      "updated_at": 1491243256867
+    }
+  },
+  "schema_version": "0.0.5",
+  "updated_at": 1491672345200
+}

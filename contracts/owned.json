@@ -1,0 +1,14 @@
+{
+  "contract_name": "owned",
+  "abi": [
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    }
+  ],
+  "unlinked_binary": "0x6060604052346000575b60008054600160a060020a03191633600160a060020a03161790555b5b60358060336000396000f30060606040525b60005600a165627a7a723058206b5ae54a711990d18455dd8810b342b32c4a72f810a823384661986f90a866bc0029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1491672316331
+}
