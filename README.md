@@ -12,7 +12,7 @@ The scope of the Code is to show what you can achieve in Solidity, Ethereum, Web
 * Write Test Cases
 * Deploy the DApp
 * Work with MIST
-* Integrate Angular into Truffle
+* Work with Truffle and WebPack
 
 ## Install Instructions
 
