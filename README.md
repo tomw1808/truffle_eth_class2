@@ -106,7 +106,6 @@ npm install --global --production windows-build-tools
 
 ### Geth Attach
 
-https://www.udemy.com/ethereum-developer/learn/v4/questions/1846724
 
 On Windows its simply possible to do a `geth attach`, but on MacOS it seems that you need to provide the actual ipc file. `geth --datadir /media/user/sdcard/chaindata --ipcpath $HOME/.ethereum/geth.ipc console` which is a problem posed here: http://ethereum.stackexchange.com/questions/4472/port-30303-error-in-mist-when-i-run-geth-with-a-different-datadir
 
@@ -122,7 +121,7 @@ geth init path/to/genesis.json --datadir=/path/to/some/folder
 
 
 ### Solidity Compilation Errors/Warnings
-Solidity is in active maintenance and things change _all the time_! The code throughout the course was written for SolC 3.5, the current version (at the time this Readme was written) is 0.4.8.
+Solidity is in active maintenance and things change _all the time_! The code throughout the course was written for the current version (at the time this Readme was written) 0.4.8.
 
 Any Solidity Program can be "forced" to use another compiler version (older one) by using as _first line in your program_
 `pragma solidity ^0.4.0;` for version 0.4.0, change it to whatever version you might need.
