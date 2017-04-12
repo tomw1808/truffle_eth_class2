@@ -1,6 +1,8 @@
 # Course Materials for DApp Development with Solidity
 This is the official Repository for all the Code you write during our course.
 
+The course can be found here for limited time for $15: https://www.udemy.com/blockchain-developer/?couponCode=REPO15
+
 ## Scope
 The scope of the Code is to show what you can achieve in Solidity, Ethereum, Web3, Truffle, Ethereum Studio, etc. In Particular:
 
