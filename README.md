@@ -24,7 +24,7 @@ Developing for Ethereum is sometimes frustrating, because things change at fast 
 
 ### Windows
 
-1. Download Pyhton:
+1. Download Python:
  https://www.python.org/downloads/release/python-2712/
 
 2. .Net Packages
