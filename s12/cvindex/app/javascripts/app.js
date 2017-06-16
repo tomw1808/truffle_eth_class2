@@ -182,13 +182,13 @@ window.App = {
             _author = author;
             return cvextender_instance_global.getAddress();
           }).then(function (address) {
-            _address = address.replace(/[^a-z0-9:/?\s.,]/gi,"*hidden*");
+            _address = address.replace(/[^a-z0-9:/?\s.,-_]/gi,"*hidden*");
             return cvextender_instance_global.getDescription();
           }).then(function (description) {
-            _description = description.replace(/[^a-z0-9:/?\s.,]/gi,"*hidden*");
+            _description = description.replace(/[^a-z0-9:/?\s.,-_@]/gi,"*hidden*");
             return cvextender_instance_global.getTitle();
           }).then(function (title) {
-            _about = title.replace(/[^a-z0-9:/?\s.,]/gi,"*hidden*");
+            _about = title.replace(/[^a-z0-9:/?\s.,-_@]/gi,"*hidden*");
             document.getElementById("submitted").innerHTML += '<h3><a href="' + _address + '" target="_blank">' + _about + '</a></h3><p>'+_description+'</p><p><small> ' + _author[0].replace(/[^a-z0-9:/?\s@.,]/gi,"*hidden*") + " - " + _author[1].replace(/[^a-z0-9:/?\s@.,]/gi,"*hidden*") + "</small></p><hr/><br />";
           });
         })
