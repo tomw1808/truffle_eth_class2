@@ -18,6 +18,18 @@ The scope of the Code is to show what you can achieve in Solidity, Ethereum, Web
 
 Developing for Ethereum is sometimes frustrating, because things change at fast pace. If something does not work as described here, please:
 
+### Update July 2017
+On all platforms it should be easier to install truffle now. The truffle team has put together a package that doesn't need compilation:
+```
+npm install -g truffle@beta
+npm install -g ethereumjs-testrpc@beta
+```
+
+It comes with one caveat: The initial course project with the MetaCoin and truffle-webpack seems to throw an error. The Truffle team is notified about it, we are waiting for the issue to resolve.
+### Update End
+
+### General
+
 1. try a google search as you are 100% not alone with your problem
 2. inform the instructors of the course so they can correct the problem
 3. if you have the time, it would be awesome if you'd make a pull-request here
@@ -62,7 +74,33 @@ sudo apt-get install curl git vim build-essential
  sudo npm install -g express
 ```
 
+### Mac
+
+1. Install node
+https://nodejs.org/en/download/
+
+2. Install a c++ compiler which typically comes with xCode.
+
+3. Install truffle from the command line **as root/systems administrator**
+```
+npm install -g truffle
+```
+
+
 ## Known Issues
+
+### Fatal: Error starting protocol stack: listen udp :30303: bind: address already in use
+When this pops up using Mist on Mac while opening your private network, then you have to specify the exact path to the ipc file. The exact path is printed when geth is started in the command line!
+
+For GETH:
+```
+geth attach ipc:/path/to/the/file/geth.ipc
+```
+
+For MIST:
+```
+/Applications/Mist.app/Contents/MacOS/Mist --rpc <path to chaindata>/geth.ipc
+```
 
 ### Error when running truffle test/migrate
 
