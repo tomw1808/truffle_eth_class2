@@ -18,14 +18,15 @@ The scope of the Code is to show what you can achieve in Solidity, Ethereum, Web
 
 Developing for Ethereum is sometimes frustrating, because things change at fast pace. If something does not work as described here, please:
 
-### Update July 2017
+### Update October 2017
 On all platforms it should be easier to install truffle now. The truffle team has put together a package that doesn't need compilation:
 ```
-npm install -g truffle@beta
-npm install -g ethereumjs-testrpc@beta
+npm install -g truffle
+npm install -g ethereumjs-testrpc
 ```
 
-It comes with one caveat: The initial course project with the MetaCoin and truffle-webpack seems to throw an error. The Truffle team is notified about it, we are waiting for the issue to resolve.
+All code should be updated to the Solidity Version 0.4.15 and works with Truffle 3.4.11.
+
 ### Update End
 
 ### General
@@ -36,18 +37,18 @@ It comes with one caveat: The initial course project with the MetaCoin and truff
 
 ### Windows
 
-1. Download Python:
+~~1. Download Python:~~
  https://www.python.org/downloads/release/python-2712/
 
-2. .Net Packages
+~~2. .Net Packages~~
  https://www.microsoft.com/en-US/download/details.aspx?id=49982
 
  https://www.microsoft.com/en-us/download/details.aspx?id=30653
 
-3. SSL
+~~3. SSL~~
  https://slproweb.com/products/Win32OpenSSL.html
 
-4. and eventually you also need the Visual Studio, because of the C++ Compiler:
+~~4. and eventually you also need the Visual Studio, because of the C++ Compiler:~~
  https://www.visualstudio.com/vs/
 
  After downloading the Visual Studio make sure to open one time _a new c++ project_.
@@ -58,10 +59,13 @@ It comes with one caveat: The initial course project with the MetaCoin and truff
 6. Install NodeJS and the Node Package Manager (NPM)
  https://nodejs.org/en/download/
 
+7. Install Truffle and TestRPC
+ npm install -g truffle
+ npm install -g ethereumjs-testrpc
 
 ### Ubuntu
 
-1. Install necessary packages:
+~~1. Install necessary packages:~~
 ```
 sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install curl git vim build-essential
@@ -74,16 +78,20 @@ sudo apt-get install curl git vim build-essential
  sudo npm install -g express
 ```
 
+3. Install Truffle and TestRPC
+ npm install -g truffle
+ npm install -g ethereumjs-testrpc
 ### Mac
 
 1. Install node
 https://nodejs.org/en/download/
 
-2. Install a c++ compiler which typically comes with xCode.
+~~2. Install a c++ compiler which typically comes with xCode.~~
 
 3. Install truffle from the command line **as root/systems administrator**
 ```
 npm install -g truffle
+npm install -g ethereumjs-testrpc
 ```
 
 
@@ -166,7 +174,7 @@ Solidity is in active maintenance and things change _all the time_! The code thr
 Any Solidity Program can be "forced" to use another compiler version (older one) by using as _first line in your program_
 `pragma solidity ^0.4.0;` for version 0.4.0, change it to whatever version you might need.
 
-The code here is updated to work with solidity 0.4.8.
+The code here is updated to work with solidity 0.4.15.
 
 
 ## Contact

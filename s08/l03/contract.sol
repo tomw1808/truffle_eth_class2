@@ -1,28 +1,28 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.15;
 contract MyContract {
     address creator;
     uint256 myNumber;
 
-    function MyContract() {
+    function MyContract() public {
         creator = msg.sender;
         myNumber = 3;
     }
 
-    function getCreator() constant returns(address) {
+    function getCreator() public constant returns(address) {
         return creator;
     }
 
-    function getMyNumber() constant returns(uint256) {
+    function getMyNumber() public constant returns(uint256) {
         return myNumber;
     }
 
-    function setMyNumber(uint256 myNewNumber) {
+    function setMyNumber(uint256 myNewNumber) public {
         myNumber = myNewNumber;
     }
 
-    function kill() {
+    function kill() public {
         if(msg.sender == creator) {
-            suicide(creator);
+            selfdestruct(creator);
         }
     }
 }

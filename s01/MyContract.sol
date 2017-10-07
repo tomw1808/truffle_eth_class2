@@ -1,17 +1,17 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.15;
 
 contract MyContract {
     address owner;
-    
-    function MyContract() {
+
+    function MyContract() public {
         owner = msg.sender;
     }
-    
-    function getCreator() constant returns(address) {
+
+    function getCreator() public constant returns(address) {
         return owner;
     }
-    
-    function kill() {
+
+    function kill() public {
         if(msg.sender == owner) {
             selfdestruct(msg.sender);
         }
