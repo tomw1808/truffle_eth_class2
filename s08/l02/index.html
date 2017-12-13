@@ -13,7 +13,9 @@
         }
 
         function getBalance() {
-            document.getElementById("myBalance").innerText = web3.fromWei(web3.eth.getBalance(web3.eth.accounts[0]), "ether");
+            web3.eth.getBalance(web3.eth.accounts[0], function(error, balance) {
+                document.getElementById("myBalance").innerText = web3.fromWei(balance, "ether");
+            });
         }
     </script>
 </head>
