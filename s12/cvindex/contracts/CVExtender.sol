@@ -1,11 +1,11 @@
 pragma solidity ^0.4.15;
 contract CVExtender {
-    function getDescription() public constant returns (string);
-    function getTitle() public constant returns (string);
-    function getAuthor() public constant returns (string, string);
-    function getAddress() public constant returns (string);
+    function getDescription() public view returns (string);
+    function getTitle() public view returns (string);
+    function getAuthor() public view returns (string, string);
+    function getAddress() public view returns (string);
 
-    function elementsAreSet() public constant returns (bool) {
+    function elementsAreSet() public view returns (bool) {
         //Normally I'd do whitelisting, but for sake of simplicity, lets do blacklisting
 
         bytes memory tempEmptyStringTest = bytes(getDescription());

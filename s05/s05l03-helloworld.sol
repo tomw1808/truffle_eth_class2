@@ -1,21 +1,21 @@
 pragma solidity ^0.4.8;
 contract HelloWorld {
     uint256 counter = 0;
-    
-    function increase() {
+
+    function increase() public {
         counter++;
     }
-    
-    function decrease() {
+
+    function decrease() public {
         counter--;
     }
-    
-    function getCounter() constant returns(uint256){
+
+    function getCounter() view returns(uint256){
         return counter;
     }
-    
-    
-    function killme() {
+
+
+    function killme() public {
         suicide(msg.sender);
     }
 }
