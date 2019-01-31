@@ -1,11 +1,11 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.5.0;
 contract MyContract {
-    address creator;
+    address payable creator;
     uint256 myNumber;
 
     event NumberIsIncreased(address indexed whoIncreased, uint256 indexed oldNumber, uint256 indexed newNumber);
 
-    function MyContract() public {
+    constructor() public {
         creator = msg.sender;
         myNumber = 3;
     }
@@ -19,7 +19,7 @@ contract MyContract {
     }
 
     function setMyNumber(uint256 myNewNumber) public {
-        NumberIsIncreased(msg.sender, myNumber, myNewNumber);
+        emit NumberIsIncreased(msg.sender, myNumber, myNewNumber);
         myNumber = myNewNumber;
     }
 

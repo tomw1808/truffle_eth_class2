@@ -57,10 +57,10 @@ window.App = {
 
   listenToEvents: function() {
     MyWallet.deployed().then(function(instance) {
-      instance.receivedFunds({},{fromBlock:0, toBlock:'latest'}).watch(function(error, event) {
+      instance.ReceivedFunds({},{fromBlock:0, toBlock:'latest'}).watch(function(error, event) {
         document.getElementById("fundEvents").innerHTML += JSON.stringify(event);
       });
-      instance.proposalReceived({},{fromBlock:0, toBlock:'latest'}).watch(function(error, event) {
+      instance.ProposalReceived({},{fromBlock:0, toBlock:'latest'}).watch(function(error, event) {
         document.getElementById("proposalEvents").innerHTML += JSON.stringify(event);
       });
     });

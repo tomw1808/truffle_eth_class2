@@ -1,6 +1,28 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.5.0;
 
-import "github.com/ethereum/solidity/std/mortal.sol";
+//the contract disappeared from the web. I manually added it below
+//import "github.com/ethereum/solidity/std/mortal.sol";
+
+contract owned {
+    address payable owner;
+
+    modifier onlyowner() {
+        if (msg.sender == owner) {
+            _;
+        }
+    }
+
+    constructor() public {
+        owner = msg.sender;
+    }
+}
+
+contract mortal is owned {
+    function kill() public {
+        if (msg.sender == owner)
+            selfdestruct(owner);
+    }
+}
 
 contract SimpleWallet is mortal {
 
@@ -11,7 +33,7 @@ contract SimpleWallet is mortal {
     uint maxTransferAmount;
     }
 
-    function SimpleWallet() public {
+    constructor() public {
         //Automatically add the creator of the wallet to the permitted senders list. Makes things easier.
         myAddressMapping[msg.sender] = Permission(true, 5000 ether);
     }
@@ -29,13 +51,13 @@ contract SimpleWallet is mortal {
          * */
     }
 
-    function sendFunds(address receiver, uint amountInWei) public {
+    function sendFunds(address payable receiver, uint amountInWei) public {
         require(myAddressMapping[msg.sender].isAllowed);
         require(myAddressMapping[msg.sender].maxTransferAmount >= amountInWei); //the amount in "the bank" must be larger than the amount taken out.
         receiver.transfer(amountInWei);
     }
 
 
-    function () public payable {}
+    function () external payable {}
 
 }

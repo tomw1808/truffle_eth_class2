@@ -1,31 +1,36 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.5.0;
 
 import "./mortal.sol";
 
+/**
+    Updated for Solidity 0.5.0
+    Checkout this blog entry: https://vomtom.at/solidity-v0-5-0-breaking-changes/
+ */
+
 
 contract MyWallet is mortal {
-    event receivedFunds(address _from, uint256 _amount);
+    event ReceivedFunds(address _from, uint256 _amount);
 
     /**
      * Edit Oct 2017:
      * Added the proposal_id as it leaded to a lot of confusion how to get the actual id in "confirmProposal"
      **/
-    event proposalReceived(address indexed _from, address indexed _to, string _reason, uint256 proposal_id);
-    event sendMoneyPlain(address _from, address _to);
+    event ProposalReceived(address indexed _from, address indexed _to, string _reason, uint256 proposal_id);
+    event SendMoneyPlain(address _from, address _to);
 
     struct Proposal {
-    address _from;
-    address _to;
-    uint256 _value;
-    string _reason;
-    bool sent;
+        address _from;
+        address payable _to;
+        uint256 _value;
+        string _reason;
+        bool sent;
     }
 
     uint proposal_counter;
 
     mapping(uint => Proposal) m_proposals;
 
-    function spendMoneyOn(address _to, uint256 _value, string _reason) public returns (uint256) {
+    function spendMoneyOn(address payable _to, uint256 _value, string memory _reason) public returns (uint256) {
         if(owner == msg.sender) {
             /**
              * Update From Solidtiy 0.4.13, where .transfer was introduced!
@@ -33,11 +38,11 @@ contract MyWallet is mortal {
              * .send() as shown in the video is depricated.
              **/
             _to.transfer(_value);
-            sendMoneyPlain(msg.sender, _to);
+            emit SendMoneyPlain(msg.sender, _to);
         } else {
             proposal_counter++;
             m_proposals[proposal_counter] = Proposal(msg.sender, _to, _value, _reason, false);
-            proposalReceived(msg.sender, _to, _reason, proposal_counter);
+            emit ProposalReceived(msg.sender, _to, _reason, proposal_counter);
             return proposal_counter;
         }
     }
@@ -53,9 +58,9 @@ contract MyWallet is mortal {
         return false;
     }
 
-    function() payable public {
+    function() external payable {
         if(msg.value > 0) {
-            receivedFunds(msg.sender, msg.value);
+            emit ReceivedFunds(msg.sender, msg.value);
         }
     }
 }

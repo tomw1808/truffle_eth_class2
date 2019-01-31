@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.5.0;
 
 import "./mortal.sol";
 
@@ -8,7 +8,7 @@ contract MyWallet is mortal {
     event sendMoneyPlain(address _from, address _to);
     struct Proposal {
         address _from;
-        address _to;
+        address payable _to;
         uint256 _value;
         string _reason;
         bool sent;
@@ -18,24 +18,20 @@ contract MyWallet is mortal {
     
     mapping(uint => Proposal) m_proposals;
 
-    function spendMoneyOn(address _to, uint256 _value, string _reason) returns (uint256) {
+    function spendMoneyOn(address payable _to, uint256 _value, string memory _reason) public returns (uint256) {
         if(owner == msg.sender) {
-            bool sent = _to.send(_value);
-            if(!sent) {
-                throw;
-            } else {
-                sendMoneyPlain(msg.sender, _to);
-                }
+            require(_to.send(_value));
+            emit sendMoneyPlain(msg.sender, _to);
         } else {
             proposal_counter++;
             m_proposals[proposal_counter] = Proposal(msg.sender, _to, _value, _reason, false);
-            proposalReceived(msg.sender, _to, _reason);
+            emit proposalReceived(msg.sender, _to, _reason);
             return proposal_counter;
         }
     }
     
-    function confirmProposal(uint proposal_id) onlyowner returns (bool) {
-        Proposal proposal = m_proposals[proposal_id];
+    function confirmProposal(uint proposal_id) public onlyowner returns (bool) {
+        Proposal memory proposal = m_proposals[proposal_id];
         if(proposal._from != address(0)) {
             if(proposal.sent != true) {
                 proposal.sent = true;
@@ -48,9 +44,9 @@ contract MyWallet is mortal {
         }
     }
     
-   function() payable {
+   function() external payable {
        if(msg.value > 0) {
-           receivedFunds(msg.sender, msg.value);
+           emit receivedFunds(msg.sender, msg.value);
        }
    }
 }

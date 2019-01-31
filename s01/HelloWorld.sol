@@ -1,4 +1,4 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.5.0;
 
 contract HelloWorld {
     uint256 counter;
@@ -11,7 +11,7 @@ contract HelloWorld {
         counter--;
     }
 
-    function getCounter() public constant returns (uint256){
+    function getCounter() public view returns (uint256){
         return counter;
     }
 }

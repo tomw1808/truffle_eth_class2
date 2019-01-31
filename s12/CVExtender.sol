@@ -1,9 +1,9 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.5.0;
 contract CVExtender {
-    function getDescription() public view returns (string);
-    function getTitle() public view returns (string);
-    function getAuthor() public view returns (string, string);
-    function getAddress() public view returns (string);
+    function getDescription() public view returns (string memory);
+    function getTitle() public view returns (string memory);
+    function getAuthor() public view returns (string memory, string memory);
+    function getAddress() public view returns (string memory);
 
     function elementsAreSet() public view returns (bool) {
         //Normally I'd do whitelisting, but for sake of simplicity, lets do blacklisting
@@ -16,7 +16,7 @@ contract CVExtender {
         if(tempEmptyStringTest.length == 0) {
             return false;
         }
-        var (testString1, testString2) = getAuthor();
+        (string memory testString1, string memory testString2) = getAuthor();
 
         tempEmptyStringTest = bytes(testString1);
         if(tempEmptyStringTest.length == 0) {

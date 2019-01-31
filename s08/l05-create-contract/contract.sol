@@ -1,9 +1,9 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.5.0;
 contract MyContract {
-    address creator;
+    address payable creator;
     uint256 myNumber;
 
-    function MyContract() public {
+    constructor() public {
         creator = msg.sender;
         myNumber = 3;
     }

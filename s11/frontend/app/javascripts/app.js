@@ -72,13 +72,13 @@ window.App = {
     var meta;
     MyWallet.deployed().then(function(instance) {
       meta = instance;
-      e_receivedFunds = meta.receivedFunds().watch(function(error, event) {
+      e_receivedFunds = meta.ReceivedFunds().watch(function(error, event) {
         console.log(event);
       });
-      e_proposalReceived = meta.proposalReceived().watch(function(error, event) {
+      e_proposalReceived = meta.ProposalReceived().watch(function(error, event) {
         console.log(event);
       });
-      e_sendMoneyPlain = meta.sendMoneyPlain().watch(function(error, event) {
+      e_sendMoneyPlain = meta.SendMoneyPlain().watch(function(error, event) {
         console.log(event);
       });
 

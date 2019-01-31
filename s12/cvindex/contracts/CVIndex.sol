@@ -1,10 +1,10 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.5.0;
 
 import "./CVExtender.sol";
 
 
 contract owned {
-    address owner;
+    address payable owner;
 
     modifier onlyowner() {
         /**
@@ -16,7 +16,7 @@ contract owned {
         _;
     }
 
-    function owned() public {
+    constructor() public {
         owner = msg.sender;
     }
 }
@@ -59,7 +59,7 @@ contract CVIndex is mortal {
         require(cv_dings.elementsAreSet() == true);
 
         map_cvs[i_cvindex] = CV(cvAddress, false, msg.sender, now);
-        ProposedCV(i_cvindex, msg.sender, cvAddress, now);
+        emit ProposedCV(i_cvindex, msg.sender, cvAddress, now);
         addressCVPosition[cvAddress] = i_cvindex;
 
     }
@@ -68,11 +68,11 @@ contract CVIndex is mortal {
         map_cvs[cvIndex]._active = true;
         i_cvindex_active++;
         map_cvs_active[i_cvindex_active] = map_cvs[cvIndex];
-        ActivatedCV(i_cvindex_active, map_cvs[cvIndex]._address, now);
+        emit ActivatedCV(i_cvindex_active, map_cvs[cvIndex]._address, now);
     }
 
     function deactivateCV(uint cvIndexActive) public onlyowner {
-        if(address(map_cvs_active[cvIndexActive]._address) != 0x0) {
+        if(address(map_cvs_active[cvIndexActive]._address) != address(0x0)) {
             map_cvs[addressCVPosition[map_cvs_active[cvIndexActive]._address]]._active = false;
             //move the last element over the one here
             map_cvs_active[cvIndexActive] = map_cvs_active[i_cvindex_active];

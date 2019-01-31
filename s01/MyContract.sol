@@ -1,13 +1,13 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.5.0;
 
 contract MyContract {
     address owner;
 
-    function MyContract() public {
+    constructor() public {
         owner = msg.sender;
     }
 
-    function getCreator() public constant returns(address) {
+    function getCreator() public view returns(address) {
         return owner;
     }
 

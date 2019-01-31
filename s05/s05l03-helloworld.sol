@@ -1,4 +1,4 @@
-pragma solidity ^0.4.8;
+pragma solidity ^0.5.0;
 contract HelloWorld {
     uint256 counter = 0;
 
@@ -10,12 +10,12 @@ contract HelloWorld {
         counter--;
     }
 
-    function getCounter() view returns(uint256){
+    function getCounter() public view returns(uint256){
         return counter;
     }
 
 
     function killme() public {
-        suicide(msg.sender);
+        selfdestruct(msg.sender);
     }
 }

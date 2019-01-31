@@ -1,7 +1,7 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.5.0;
 
 contract owned {
-    address owner;
+    address payable owner;
 
     modifier onlyowner() {
         /**
@@ -9,11 +9,11 @@ contract owned {
          * See: https://vomtom.at/exception-handling-in-solidity/
          * If you have any questions, head over to the course Q&A!
          **/
-        require(msg.sender == owner);
+        require(msg.sender == owner, "Owner is not the msg.sender");
         _;
     }
 
-    function owned() public {
+    constructor() public {
         owner = msg.sender;
     }
 }

@@ -1,7 +1,12 @@
-pragma solidity ^0.4.15;
+pragma solidity ^0.5.0;
+
+/**
+    Updated for Solidity 0.5.0
+    Checkout this blog entry: https://vomtom.at/solidity-v0-5-0-breaking-changes/
+ */
 
 contract owned {
-    address owner;
+    address payable owner;
 
     modifier onlyowner() {
         /**
@@ -9,11 +14,11 @@ contract owned {
          * See: https://vomtom.at/exception-handling-in-solidity/
          * If you have any questions, head over to the course Q&A!
          **/
-        require(msg.sender == owner);
+        require(msg.sender == owner, "Owner is not msg.sender");
         _;
     }
 
-    function owned() public {
+    constructor() public {
         owner = msg.sender;
     }
 }
@@ -26,22 +31,22 @@ contract mortal is owned {
 }
 
 contract MyWallet is mortal {
-    event receivedFunds(address _from, uint256 _amount);
-    event proposalReceived(address indexed _from, address indexed _to, string _reason);
+    event ReceivedFunds(address _from, uint256 _amount);
+    event ProposalReceived(address indexed _from, address indexed _to, string _reason);
 
     struct Proposal {
-    address _from;
-    address _to;
-    uint256 _value;
-    string _reason;
-    bool sent;
+        address _from;
+        address payable _to;
+        uint256 _value;
+        string _reason;
+        bool sent;
     }
 
     uint proposal_counter;
 
     mapping(uint => Proposal) m_proposals;
 
-    function spendMoneyOn(address _to, uint256 _value, string _reason) public returns (uint256) {
+    function spendMoneyOn(address payable _to, uint256 _value, string memory _reason) public returns (uint256) {
         if(owner == msg.sender) {
             /**
              * Update From Solidtiy 0.4.13, where .transfer was introduced!
@@ -52,7 +57,7 @@ contract MyWallet is mortal {
         } else {
             proposal_counter++;
             m_proposals[proposal_counter] = Proposal(msg.sender, _to, _value, _reason, false);
-            proposalReceived(msg.sender, _to, _reason);
+            emit ProposalReceived(msg.sender, _to, _reason);
             return proposal_counter;
         }
     }
@@ -68,9 +73,9 @@ contract MyWallet is mortal {
         return false;
     }
 
-    function() payable public {
+    function() external payable {
         if(msg.value > 0) {
-            receivedFunds(msg.sender, msg.value);
+            emit ReceivedFunds(msg.sender, msg.value);
         }
     }
 }
